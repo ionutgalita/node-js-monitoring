@@ -1,0 +1,16 @@
+{
+  "name": "node-js-monitoring",
+  "version": "1.0.0",
+  "description": "Monitor users with Node.js and WebSockets",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Ionut Galita",
+  "license": "GNU",
+  "dependencies": {
+    "node-uuid": "^1.4.3",
+    "websockets": "^0.2.0"
+  }
+}

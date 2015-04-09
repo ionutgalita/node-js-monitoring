@@ -1,0 +1,82 @@
+<html>
+<head>
+	<title>Real monitoring</title>
+	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+
+</head>
+<body>
+	<div class="container">
+		<div class="admin-holder" style="display: none; margin-top: 50px;">
+			<div class="well center-block" style="height: 60px;">
+				<div class="col-md-6 text-left" >
+					<div><span style="font-size: 19px; font-weight: bold">Monitoring panel</span> <small>v 1.0</small></div> 
+				</div>
+				<div class="col-md-6 text-right">
+					<div class="users-count label label-success" style="font-size: 18px;">Users connected: <span>0</span></div>
+				</div>
+			</div>
+			<div class="well center-block pages-tracking" style="display: none; margin-top: 50px;">
+				<h3>Currently viewed pages</h3>
+				<div></div>
+			</div>
+		</div>
+		<div class="client-holder well center-block text-center" style="margin-top: 50px;">
+			<h2>Welcome to this website</h2>
+		</div>
+	</div>
+	<script>
+
+		var ws = new WebSocket('ws://127.0.0.1:1234', 'json');
+
+		ws.onopen = function(event) {
+			var trackingMessage = JSON.stringify({isAdmin: true, path : window.location.pathname});
+		    ws.send(trackingMessage); 
+		  };
+
+		ws.addEventListener("message", function(e) {
+
+		    var msg = $.parseJSON(e.data);
+
+		    $('.users-count span').text(msg.clients);
+	   
+		    if (typeof msg.pages !== 'undefined') {
+
+		    	if($.isEmptyObject(msg.pages)){
+
+			    	$('.pages-tracking').css('display', 'none');
+
+			    } else {
+
+			    	$('.pages-tracking ul').remove();
+
+			    	var ul = $("<ul>");
+			    	ul.addClass('list-group');
+
+			    	$.each(msg.pages, function (key, value) {
+			            
+			            var $li = $('<li />');
+			            $li.addClass('list-group-item');
+			            $li.append('<span class="badge">' + value + '</span> ' + '<a href="' +key  + '" target="_blank">' + key + '</a>');
+
+			            ul.append($li);
+
+			        });
+
+			    	$('.pages-tracking div').html(ul);
+			    	$('.pages-tracking').css('display', '');
+			    	
+
+			    }
+
+		    }
+		    
+
+		    $('.admin-holder').css('display', '');
+		    $('.client-holder').css('display', 'none');
+
+		});
+
+	</script>
+</body>
+</html>
