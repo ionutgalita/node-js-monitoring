@@ -11,6 +11,6 @@
   "license": "GNU",
   "dependencies": {
     "node-uuid": "^1.4.3",
-    "websockets": "^0.2.0"
+    "websocket": "^1.0.18"
   }
 }
