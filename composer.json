@@ -1,0 +1,13 @@
+{
+    "name": "ionutgalita/node-monitor",
+    "description": "Monitor web users with Node.js and WebSockets",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ionut Galita",
+            "email": "xeqtor.creed@yahoo.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

@@ -1,7 +1,7 @@
 {
   "name": "node-js-monitoring",
   "version": "1.0.0",
-  "description": "Monitor users with Node.js and WebSockets",
+  "description": "Monitor web users with Node.js and WebSockets",
   "main": "server.js",
   "scripts": {
       "test": "./node_modules/jshint/bin/jshint index.js"
