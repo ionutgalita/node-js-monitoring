@@ -2,7 +2,6 @@ var httpStart = require('./server');
 var users = require('./users');
 var urls = require('./pages');
 var debug = require('./debug');
-var uuid = require('node-uuid');
 
 var count = 0;
 
@@ -16,7 +15,7 @@ wsServer = new WebSocketServer({
 });
 
 function originIsAllowed(origin) {
-  // put logic here to detect whether the specified origin is allowed.
+
   return true;
 }
 
@@ -31,131 +30,34 @@ wsServer.on('request', function(r, d){
 
     var id;
  	
-	debug.showDebug('New connection detected!');
-
-	debug.showDebug('Origin : ['  + r.origin + ']');
-
-	// Create event listener
 	connection.on('message', function(message) {
 
 			var req = JSON.parse(message.utf8Data);
 
 			page = req.path.substr(1);
 
-			id = uuid.v4();
-
-			debug.showDebug('Admin : ' + req.isAdmin);
-
 			if (!req.isAdmin) {
 			
-				clients[id] = connection;
+				id = users.clientAdd(connection);
 
-				debug.showDebug('New Client Unique ID : [' + id + ']');
-
-				debug.showDebug('Path : [' + page + ']');
-
-				if (page in pages){
-
-					pages[page] = pages[page] + 1;
-
-				} else {
-
-					pages[page] = 1;
-				}
-
-				debug.showDebug('Connected clients : [' + Object.keys(clients).length + ']');
-
-				debug.showDebug('Connected admins : [' + Object.keys(admins).length + ']');
+				urls.addPage(page, pages);
 
 				
 			} else {
 
-				admins[id] = connection;
-
-				debug.showDebug('New Admin Unique ID : [' + id + ']');
-
-				debug.showDebug('Connected clients : [' + Object.keys(clients).length + ']');
-
-				debug.showDebug('Connected admins : [' + Object.keys(admins).length + ']');
+				id = users.adminAdd(connection);
 
 			}
 
-			var sendMess = {};
+			users.adminSend(page, pages);
 
-			sendMess.clients = Object.keys(clients).length;
-			sendMess.pages = pages;
-
-			for(var i in admins){
-
-			        admins[i].send(JSON.stringify(sendMess));
-			}
-
-
-			debug.showDebug('============================================');
-	
 
 	});
 
 	connection.on('close', function(reasonCode, description) {
 
-		var deleted = false;
 
-		debug.showDebug('Disconnect detected!');
-
-		for (var c in clients) {
-
-			if (c == id) {
-
-				delete clients[id];
-
-				deleted = true;
-
-				debug.showDebug('Deleting Client with ID : [' + id + ']');
-
-				var sendMess = {};
-
-				pages[page] = pages[page] - 1;
-
-				if (pages[page] === 0) {
-
-					delete pages[page];
-				}
-
-				sendMess.clients = Object.keys(clients).length;
-				sendMess.pages = pages;
-
-				for(var i in admins){
-
-			        admins[i].send(JSON.stringify(sendMess));
-				}
-			}
-		}
-
-
-		if (!deleted) {
-
-			for (var a in admins) {
-
-				if (a == id) {
-
-					debug.showDebug('Deleting Admin with ID : [' + id + ']');
-
-					delete admins[id];
-
-				}
-			}
-
-
-		}
-	    
-
-
-		debug.showDebug('Connected clients : [' + Object.keys(clients).length + ']');
-
-		debug.showDebug('Connected admins : [' + Object.keys(admins).length + ']');
-
-	    debug.showDebug('============================================');
-
+		users.connClose(id, page, pages);
 	    
 
 	});
