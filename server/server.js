@@ -113,8 +113,8 @@ wsServer.on('request', function(r, d){
 
 			var sendMess = {};
 
-			sendMess['clients'] = Object.keys(clients).length;
-			sendMess['pages'] = pages;
+			sendMess.clients = Object.keys(clients).length;
+			sendMess.pages = pages;
 
 			for(var i in admins){
 
@@ -147,13 +147,13 @@ wsServer.on('request', function(r, d){
 
 				pages[page] = pages[page] - 1;
 
-				if (pages[page] == 0) {
+				if (pages[page] === 0) {
 
 					delete pages[page];
 				}
 
-				sendMess['clients'] = Object.keys(clients).length;
-				sendMess['pages'] = pages;
+				sendMess.clients = Object.keys(clients).length;
+				sendMess.pages = pages;
 
 				for(var i in admins){
 
