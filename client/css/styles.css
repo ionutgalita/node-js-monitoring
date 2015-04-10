@@ -1,0 +1,44 @@
+.more-info
+{
+	display: none;
+	border-top: 1px solid #EFEFEF;
+	margin-top: 10px;
+	padding-top: 10px;
+}
+
+.admin-holder, 
+.pages-tracking, 
+.client-holder 
+{
+	margin-top: 50px;
+}
+
+.visitor-list li{
+	list-style: none;
+	padding-top: 5px;
+	font-size: 11px;
+}
+
+.visitor-list li img {
+	width: 25px;
+	margin-right: 10px;
+	vertical-align: sub;
+}
+
+.font-large {
+	font-size: 15px;
+}
+
+.connection-error {
+	margin-right: 15px;
+}
+
+.app-name {
+	position: relative; 
+	top: -5px;
+}
+
+.app-name span {
+	font-size: 22px; 
+	font-weight: bold
+}

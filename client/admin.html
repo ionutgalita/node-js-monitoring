@@ -2,49 +2,26 @@
 <head>
 	<title>Real monitoring</title>
 	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-	<style>
 
-		.more-info
-		{
-			display: none;
-			border-top: 1px solid #EFEFEF;
-			margin-top: 10px;
-			padding-top: 10px;
-		}
-
-		.admin-holder, 
-		.pages-tracking, 
-		.client-holder 
-		{
-			margin-top: 50px;
-		}
-
-		.visitor-list li{
-
-			list-style: none;
-			padding-top: 5px;
-			font-size: 11px;
-		}
-
-		.visitor-list li img {
-			width: 25px;
-			margin-right: 10px;
-			vertical-align: sub;
-		}
-
-
-	</style>
+	<script type="text/javascript">
+		//<![CDATA[
+			var isAdmin = true;
+			var wsServer = 'ws://127.0.0.1';
+			var wsPort = '1234';
+		//]]>
+	</script>
 </head>
 <body>
 	<div class="container">
 		<div class="admin-holder">
 			<div class="well center-block" style="height: 60px;">
 				<div class="col-md-6 text-left" >
-					<div><span style="font-size: 19px; font-weight: bold">Monitoring panel</span> <small>v 1.0</small></div> 
+					<div class="app-name"><span>Monitoring panel</span> <small>v 1.0</small></div> 
 				</div>
 				<div class="col-md-6 text-right">
-					<div class="users-count label label-success" style="font-size: 18px;">Users connected: <span>0</span></div>
+					<div class="users-count label label-success font-large">Users connected: <span>0</span></div>
 				</div>
 			</div>
 			<div class="well center-block pages-tracking">
@@ -58,12 +35,27 @@
 	</div>
 	<script>
 
-		var ws = new WebSocket('ws://127.0.0.1:1234', 'json');
+		var ws = new WebSocket(wsServer + ':' + wsPort, 'json');
 
 		ws.onopen = function(event) {
-			var trackingMessage = JSON.stringify({isAdmin: true, path : window.location.pathname});
+
+			var trackingMessage = JSON.stringify({isAdmin: isAdmin, path : window.location.pathname});
 		    ws.send(trackingMessage); 
-		  };
+
+		};
+
+		ws.onerror = function(event) {
+
+			if (isAdmin) {
+
+				$('.admin-holder').css('display', '');
+				$('.pages-tracking').css('display', 'none');
+		    	$('.client-holder').css('display', 'none');
+
+		    	$('.users-count').before('<div class="label label-danger font-large connection-error">Connection to the server failed!</div>');
+			}
+			return;
+		};
 
 		ws.addEventListener("message", function(e) {
 
