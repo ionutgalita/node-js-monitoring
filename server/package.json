@@ -4,7 +4,7 @@
   "description": "Monitor web users with Node.js and WebSockets",
   "main": "server.js",
   "scripts": {
-      "test": "./node_modules/jshint/bin/jshint index.js"
+    "test": "./node_modules/jshint/bin/jshint index.js"
   },
   "author": "Ionut Galita",
   "license": "GNU",

@@ -44,11 +44,9 @@ exports.adminSend = function(page, pages) {
 	}
 }
 
-exports.connClose = function(id, page, pages) {
+exports.connClose = function(id, page, pages, ip) {
 
 	var deleted = false;
-
-	console.log(id + ' ' + Object.keys(clients).length);
 
 	for (var c in clients) {
 
@@ -60,9 +58,17 @@ exports.connClose = function(id, page, pages) {
 
 				var sendMess = {};
 
-				pages[page] = pages[page] - 1;
+				var ips = pages[page].ips;
 
-				if (pages[page] === 0) {
+				var ipIndex = ips.indexOf(ip);
+
+				ips.splice(ipIndex, 1);
+
+				pages[page].count = pages[page].count - 1;
+
+				pages[page].ips = ips;
+
+				if (pages[page].count === 0) {
 
 					delete pages[page];
 				}
