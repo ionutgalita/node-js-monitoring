@@ -7,12 +7,22 @@
     "test": "./node_modules/jshint/bin/jshint index.js"
   },
   "author": "Ionut Galita",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xeqtor/node-js-monitoring"
+  },
+  "keywords": [
+    "monitor",
+    "websocket",
+    "web users monitor"
+  ],
   "license": "GNU",
   "dependencies": {
     "node-uuid": "^1.4.3",
     "websocket": "^1.0.18"
   },
   "devDependencies": {
+    "forever": "^0.14.1",
     "jshint": "^2.6.3"
   }
 }
